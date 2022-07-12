@@ -1,0 +1,33 @@
+service: serverless-typescript-template
+useDotenv: true
+frameworkVersion: '3'
+
+package:
+  individually: true
+
+plugins:
+  - serverless-bundle
+  - serverless-dotenv-plugin
+  - ./plugin
+
+custom:
+  bundle:
+    excludeFiles: '**/*.test.ts'
+
+  dotenv:
+    basePath: ./config/
+    logging: false
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  lambdaHashingVersion: 20201221
+
+functions:
+  health:
+    handler: src/health.health
+    events:
+      - http:
+          path: health
+          method: get
